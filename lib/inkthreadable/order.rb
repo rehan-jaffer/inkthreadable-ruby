@@ -31,7 +31,6 @@ module Inkthreadable
         signature = Digest::SHA1.hexdigest(query_string + Inkthreadable::Setup.configuration.secret_key)
         query_string += "&Signature=#{signature}"
         
-        puts signature
         data = URI("https://www.inkthreadable.co.uk/api/orders.php?#{query_string}").read
         begin
           parsed_data = JSON.parse(data)
