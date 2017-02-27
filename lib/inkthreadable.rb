@@ -25,7 +25,7 @@ module Inkthreadable
 
       def initialize
         @app_id = "APP-00100205"
-        @secret_key = "dkbwvjfZXgRJvZdu7h272gVMmFQ3Mv67"
+        @secret_key = ENV['SECRET_KEY']
       end
     end
 
