@@ -1,5 +1,5 @@
 require "inkthreadable/version"
+require "inkthreadable/order"
 
 module Inkthreadable
-  # Your code goes here...
 end
