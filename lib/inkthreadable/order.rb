@@ -2,6 +2,7 @@ require 'inkthreadable/order'
 require 'inkthreadable/api'
 require 'open-uri'
 require 'json'
+require 'digest/sha1'
 
 module Inkthreadable
   class Order
@@ -20,13 +21,18 @@ module Inkthreadable
     # this all needs to get moved into API module asap, coding this during a spike
     def self.get_json(resource, params)
 
+        params ||= []
         query_string = []
+        params["AppId"] = Inkthreadable::Setup.configuration.app_id
         params.each_pair do |k,v|
           query_string << "#{k}=#{v}"
         end
         query_string = query_string.join("&")
-
-        data = URI('https://www.inkthreadable.co.uk/api/orders.php').read
+        signature = Digest::SHA1.hexdigest(query_string + Inkthreadable::Setup.configuration.secret_key)
+        query_string += "&Signature=#{signature}"
+        
+        puts signature
+        data = URI("https://www.inkthreadable.co.uk/api/orders.php?#{query_string}").read
         begin
           parsed_data = JSON.parse(data)
           if parsed_data.has_key?("error")
