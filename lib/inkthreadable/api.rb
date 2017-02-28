@@ -5,56 +5,49 @@ require 'pp'
 
 module Inkthreadable
   module API
+    API_BASE_URL = 'http://api.inkthreadable.com/'.freeze
 
-  API_BASE_URL = "http://api.inkthreadable.com/"
+    class Error < StandardError
+    end
 
-  class Error < StandardError
+    class Request
+      def self.get(resource = 'orders.php', params: {})
+        params['AppId'] = Inkthreadable::Setup.configuration.app_id
+        query_string = sign_query_string(transform_params(params))
+        begin
+          data = URI("https://www.inkthreadable.co.uk/api/#{resource}?#{query_string}").read
+          parsed_data = JSON.parse(data)
+          if parsed_data.key?('error')
+            raise Inkthreadable::API::Error, parsed_data['error']
+          end
+        rescue JSON::ParserError
+          raise "Could not parse request JSON #{res.body}"
+        end
+      end
 
-  end
+      private
 
-  class Request
-
-    def self.get(resource, params)
-
-        params ||= []
+      def self.transform_params(params)
         query_string = []
-        params["AppId"] = Inkthreadable::Setup.configuration.app_id
-        params.each_pair do |k,v|
+        params.each_pair do |k, v|
           query_string << "#{k}=#{v}"
         end
-        query_string = query_string.join("&")
+        query_string.join('&')
+      end
+
+      def self.sign_query_string(query_string)
         signature = Digest::SHA1.hexdigest(query_string + Inkthreadable::Setup.configuration.secret_key)
         query_string += "&Signature=#{signature}"
-
-        data = URI("https://www.inkthreadable.co.uk/api/orders.php?#{query_string}").read
-        pp data
-        begin
-          parsed_data = JSON.parse(data)
-          if parsed_data.has_key?("error")
-            raise Inkthreadable::API::Error, parsed_data["error"]
-          end
-          parsed_data
-        rescue JSON::ParserError
-          fail "Could not parse request JSON #{res.body}"
-        end
-
+        query_string
+      end
     end
 
-    # get a resource
-    # params
-    # resource - a valid inkthreadable resource
-    # params - a set of params built by RequestBuilder
-    def get(resource, params)
-
+    class Response
     end
-  end
 
-  class Response
-  end    
-
-  class RequestBuilder
-    def self.build_params(list)
-    end
-    end
+    class RequestBuilder
+      def self.build_params(_list)
+      end
+      end
   end
 end
