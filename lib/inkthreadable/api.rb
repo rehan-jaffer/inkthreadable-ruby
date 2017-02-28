@@ -1,4 +1,5 @@
 require 'pp'
+require 'cgi'
 
 # Inkthreadable API Request module
 # Inkthreadable's API provides both JSON and XML access. For the sake of homogeneity, only one will be used here (JSON)
@@ -20,6 +21,7 @@ module Inkthreadable
           if parsed_data.key?('error')
             raise Inkthreadable::API::Error, parsed_data['error']
           end
+          return parsed_data
         rescue JSON::ParserError
           raise "Could not parse request JSON #{res.body}"
         end
@@ -30,7 +32,7 @@ module Inkthreadable
       def self.transform_params(params)
         query_string = []
         params.each_pair do |k, v|
-          query_string << "#{k}=#{v}"
+          query_string << "#{k}=#{CGI.escape(v)}"
         end
         query_string.join('&')
       end
