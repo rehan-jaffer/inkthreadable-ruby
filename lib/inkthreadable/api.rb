@@ -12,7 +12,9 @@ module Inkthreadable
     end
 
     class Request
+
       def self.get(resource = 'orders.php', params: {})
+        raise Inkthreadable::API::Error, "You must set a secret key to sign requests" unless Inkthreadable::Setup.configuration.secret_key
         params['AppId'] = Inkthreadable::Setup.configuration.app_id
         query_string = sign_query_string(transform_params(params))
         begin
@@ -32,7 +34,7 @@ module Inkthreadable
       def self.transform_params(params)
         query_string = []
         params.each_pair do |k, v|
-          query_string << "#{k}=#{CGI.escape(v)}"
+          query_string << "#{k}=#{CGI.escape(v.to_s)}"
         end
         query_string.join('&')
       end
