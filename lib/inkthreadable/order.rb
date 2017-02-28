@@ -3,20 +3,23 @@ require 'inkthreadable/api'
 require 'open-uri'
 require 'json'
 require 'digest/sha1'
+require 'pp'
 
 module Inkthreadable
   class Order
     def self.count
       response = Inkthreadable::API::Request.get('orders/count.php', {})
-      response['orders'].length
+      response['count']
     end
 
     def self.all(page = 1)
-      puts Inkthreadable::API::Request.get('orders.php', page: page)
+      response = Inkthreadable::API::Request.get('orders.php', {})
+      response['orders']
     end
 
     def self.find(id)
-      puts Inkthreadable::API::Request.get('order.php', id: id)
+      puts Inkthreadable::API::Request.get('order.php', params: {"id": id})
+      response['order']
     end
 
     # readable - created_at, type, status, deleted
