@@ -11,9 +11,15 @@ describe Inkthreadable::Order do
     end
 
     describe '#find' do
+      it "should urlencode requests to avoid scrambling URLs" do
+        expect { Inkthreadable::Order.find("';") }.to raise_error Inkthreadable::API::Error
+      end
     end
 
     describe '#all' do
+      it "should return all the orders" do
+        expect(Inkthreadable::Order.all(page: 1)).to eq []
+      end
     end
 
     describe '#count' do
