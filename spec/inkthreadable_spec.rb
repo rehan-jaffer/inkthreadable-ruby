@@ -1,4 +1,5 @@
 require 'spec_helper'
+require './lib/inkthreadable'
 
 describe Inkthreadable do
   it 'has a version number' do

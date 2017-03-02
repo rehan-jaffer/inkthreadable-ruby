@@ -11,21 +11,21 @@ describe Inkthreadable::Order do
     end
 
     describe '#find' do
-      it "should urlencode requests to avoid scrambling URLs" do
-        VCR.use_cassette("order_sql_inject") do
-          expect { Inkthreadable::Order.find("';") }.to raise_error Inkthreadable::API::Error
+      it 'should urlencode requests to avoid scrambling URLs' do
+        VCR.use_cassette('order_sql_inject') do
+          expect { Inkthreadable::Order.find(id: "';") }.to raise_error Inkthreadable::API::Error
         end
       end
       it "should not return an order where there isn't one" do
-        VCR.use_cassette("order_not_found") do
-          expect(Inkthreadable::Order.find(6667784080)).to raise_error Inkthreadable::API::Error
+        VCR.use_cassette('order_not_found') do
+          expect(Inkthreadable::Order.find(id: 6_667_784_080)).to raise_error Inkthreadable::API::Error
         end
       end
     end
 
     describe '#all' do
-      it "should return all the orders" do
-        VCR.use_cassette("order_all") do
+      it 'should return all the orders' do
+        VCR.use_cassette('order_all') do
           expect(Inkthreadable::Order.all(page: 1)).to eq []
         end
       end
@@ -33,7 +33,7 @@ describe Inkthreadable::Order do
 
     describe '#count' do
       it 'should return the number of orders that exist' do
-        VCR.use_cassette("order_count") do
+        VCR.use_cassette('order_count') do
           expect(Inkthreadable::Order.count).to eq 0
         end
       end
