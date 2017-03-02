@@ -19,12 +19,12 @@ module Inkthreadable
       
     end
 
-    def self.count(since_id:, created_at_min:, created_at_max:, status:)
+    def self.count(since_id: nil, created_at_min: nil, created_at_max: nil, status: nil)
       response = Inkthreadable::API::Request.get('orders/count.php', {})
       response['count']
     end
 
-    def self.all(ids:, limit:, page:, since_id:, created_at_min:, status:)
+    def self.all(ids: nil, limit: nil, page: nil, since_id: nil, created_at_min: nil, status: nil)
       response = Inkthreadable::API::Request.get('orders.php', {})
       response['orders']
     end
