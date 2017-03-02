@@ -14,6 +14,9 @@ describe Inkthreadable::Order do
       it "should urlencode requests to avoid scrambling URLs" do
         expect { Inkthreadable::Order.find("';") }.to raise_error Inkthreadable::API::Error
       end
+      it "should not return an order where there isn't one" do
+        expect(Inkthreadable::Order.find(6667784080)).to raise_error Inkthreadable::API::Error
+      end
     end
 
     describe '#all' do
