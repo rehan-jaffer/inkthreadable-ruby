@@ -1,0 +1,45 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.inkthreadable.co.uk/api/order.php?id=%27%3B&AppId=APP-00100205&Signature=9ff5648f1705217612e14eeda2573a4b431e852d
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      accept-encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      accept:
+      - "*/*"
+      user-agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx
+      date:
+      - Thu, 02 Mar 2017 12:35:02 GMT
+      content-type:
+      - application/json; charset=utf-8
+      content-length:
+      - '27'
+      connection:
+      - keep-alive
+      set-cookie:
+      - coo_course=GBP; expires=Sat, 01-Apr-2017 12:35:02 GMT; path=/; domain=.www.inkthreadable.co.uk;
+        Secure; HttpOnly
+      - basketID=c739254e5adc33a6; expires=Sun, 05-Mar-2017 12:35:02 GMT; path=/;
+        domain=.www.inkthreadable.co.uk; Secure; HttpOnly
+      access-control-allow-origin:
+      - "*"
+      x-cache-status:
+      - BYPASS
+    body:
+      encoding: UTF-8
+      string: '{"error":"Order not found"}'
+    http_version: '1.1'
+  recorded_at: Thu, 02 Mar 2017 12:35:02 GMT
+recorded_with: VCR 3.0.3
