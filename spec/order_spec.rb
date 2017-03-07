@@ -18,7 +18,7 @@ describe Inkthreadable::Order do
       end
       it "should not return an order where there isn't one" do
         VCR.use_cassette('order_not_found') do
-          expect(Inkthreadable::Order.find(id: 6_667_784_080)).to raise_error Inkthreadable::API::Error
+          expect { Inkthreadable::Order.find(id: 6_667_784_080) }.to raise_error Inkthreadable::API::Error
         end
       end
     end
